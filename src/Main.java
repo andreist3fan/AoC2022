@@ -3,6 +3,11 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
+    /**
+     * Where the magic happens
+     * @param args args
+     * @throws FileNotFoundException if file was not added yet
+     */
     public static void main(String[] args) throws FileNotFoundException {
         Scanner fs = new Scanner(new File("input2.txt"));
         Scanner baseTest= new Scanner("A Y\n" +
@@ -117,5 +122,18 @@ public class Main {
             }
         }
         return res;
+    }
+
+    /**
+     * For the third day of AoC 2022
+     * INPUT FILE: input3.txt
+     * @param sc scanner
+     * @return correct answers
+     */
+    public static int solve3_1(Scanner sc){
+        return  0;
+    }
+    public static int solve3_2(Scanner sc){
+        return  -1;
     }
 }
