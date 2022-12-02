@@ -11,6 +11,13 @@ public class Main {
         System.out.println(solve2_2(fs));
     }
 
+
+    /**
+     * For the first day of AoC 2022
+     * INPUT FILE: input.txt
+     * @param sc scanner
+     * @return correct answers
+     */
     public static int solve1(Scanner sc) {
         int mx1 = -1;
         while (sc.hasNext()) {
@@ -26,7 +33,6 @@ public class Main {
         }
         return mx1;
     }
-
     public static int solve1_2(Scanner sc) {
         int mx1 = -1, mx2 = -1, mx3 = -1;
         while (sc.hasNext()) {
@@ -52,6 +58,12 @@ public class Main {
         return mx1 + mx2 + mx3;
     }
 
+    /**
+     * For the second day of AoC 2022
+     * INPUT FILE: input2.txt
+     * @param sc scanner
+     * @return correct answers
+     */
     public static int solve2_1(Scanner sc) {
         int res = 0;
         int i=0;
@@ -59,8 +71,8 @@ public class Main {
             i++;
             String ln = sc.nextLine();
             String[] rps = ln.split(" ");
-            int op =(int) rps[0].charAt(0) - 'A';
-            int eu =(int) rps[1].charAt(0) - 'X';
+            int op =(int) rps[0].charAt(0) - 'A'+1;
+            int eu =(int) rps[1].charAt(0) - 'X'+1;
             if(eu==0 || op==0)
             {
                 System.out.println(i);
@@ -88,13 +100,7 @@ public class Main {
             i++;
             String ln = sc.nextLine();
             String[] rps = ln.split(" ");
-            int op=0, eu=0;
-
-            if (rps[0].trim().equals("A"))
-                op = 1;
-            else if (rps[0].trim().equals("B"))
-                op = 2;
-            else if(rps[0].trim().equals("C")) op = 3;
+            int op =(int) rps[0].charAt(0) - 'A'+1;
 
             if (rps[1].trim().equals("X")){
                 if(op>1)
