@@ -59,19 +59,8 @@ public class Main {
             i++;
             String ln = sc.nextLine();
             String[] rps = ln.split(" ");
-            int op=0, eu=0;
-
-            if (rps[0].trim().equals("A"))
-                op = 1;
-            else if (rps[0].trim().equals("B"))
-                op = 2;
-            else if(rps[0].trim().equals("C")) op = 3;
-
-            if (rps[1].trim().equals("X"))
-                eu = 1;
-            else if (rps[1].trim().equals("Y"))
-                eu = 2;
-            else if(rps[1].trim().equals("Z")) eu = 3;
+            int op =(int) rps[0].charAt(0) - 'A';
+            int eu =(int) rps[1].charAt(0) - 'X';
             if(eu==0 || op==0)
             {
                 System.out.println(i);
