@@ -9,11 +9,9 @@ public class Main {
      * @throws FileNotFoundException if file was not added yet
      */
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner fs = new Scanner(new File("input2.txt"));
-        Scanner baseTest= new Scanner("A Y\n" +
-            "B X\n" +
-            "C Z");
-        System.out.println(solve2_2(fs));
+        Scanner fs = new Scanner(new File("input3.txt"));
+        Scanner baseTest= new Scanner("");
+        System.out.println(solve3_2(fs));
     }
 
 
@@ -100,25 +98,25 @@ public class Main {
     }
     public static int solve2_2(Scanner sc) {
         int res = 0;
-        int i=0;
         while (sc.hasNextLine()) {
-            i++;
             String ln = sc.nextLine();
             String[] rps = ln.split(" ");
             int op =(int) rps[0].charAt(0) - 'A'+1;
 
-            if (rps[1].trim().equals("X")){
-                if(op>1)
-                    res+=(op-1);
-                else res+=3;
-            }
-            else if (rps[1].trim().equals("Y")){
-                res+=(op+3);
-            }
-            else if(rps[1].trim().equals("Z")) {
-                if(op<3)
-                    res+=(op+1+6);
-                else res+=(7);
+            switch (rps[1].trim()) {
+                case "X":
+                    if (op > 1)
+                        res += (op - 1);
+                    else res += 3;
+                    break;
+                case "Y":
+                    res += (op + 3);
+                    break;
+                case "Z":
+                    if (op < 3)
+                        res += (op + 1 + 6);
+                    else res += (7);
+                    break;
             }
         }
         return res;
@@ -131,9 +129,62 @@ public class Main {
      * @return correct answers
      */
     public static int solve3_1(Scanner sc){
-        return  0;
+        int res=0;
+        while(sc.hasNextLine()){
+            String ln = sc.nextLine();
+            String half1 = ln.substring(0,ln.length()/2);
+            String half2 = ln.substring(ln.length()/2);
+            int i=0;
+            char x='0';
+            while(i<half1.length()){
+                x =half1.charAt(i);
+                if(half2.contains(Character.toString(x))){
+                   break;
+                }
+                i++;
+            }
+            if(Character.isLowerCase(x))
+                res=res + (int) x-'a'+1;
+            else if(Character.isUpperCase(x))
+                res=res + (int) x-'A'+27;
+            else System.out.println("wtf");
+        }
+        return res;
     }
     public static int solve3_2(Scanner sc){
-        return  -1;
+        int res=0;
+        while(sc.hasNextLine()){
+            String ln1 = sc.nextLine();
+            String ln2 = sc.nextLine();
+            String ln3=sc.nextLine();
+            int i=0;
+            char x='0';
+            while(i<ln1.length()){
+                x =ln1.charAt(i);
+                if(ln2.contains(Character.toString(x))&&ln3.contains(Character.toString(x))){
+                    break;
+                }
+                i++;
+            }
+            if(Character.isLowerCase(x))
+                res=res + (int) x-'a'+1;
+            else if(Character.isUpperCase(x))
+                res=res + (int) x-'A'+27;
+            else System.out.println("wtf");
+        }
+        return res;
+    }
+
+    /**
+     * For the fourth day of AoC 2022
+     * INPUT FILE: input4.txt
+     * @param sc scanner
+     * @return correct answers
+     */
+    public static int solve4_1(Scanner sc){
+        return -1;
+    }
+    public static int solve4_2(Scanner sc){
+        return 0;
     }
 }
