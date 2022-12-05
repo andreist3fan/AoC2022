@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -10,7 +13,7 @@ public class Main {
      * @throws FileNotFoundException if file was not added yet
      */
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner fs = new Scanner(new File("input4.txt"));
+        Scanner fs = new Scanner(new File("input5.txt"));
         Scanner baseTest = new Scanner("""
             2-4,6-8
             2-3,4-5
@@ -18,7 +21,7 @@ public class Main {
             2-8,3-7
             6-6,4-6
             2-6,4-8""");
-        System.out.println(solve4_2(fs));
+        System.out.println(solve5_2(fs));
     }
 
 
@@ -235,19 +238,102 @@ public class Main {
     /**
      * For the fifth day of AoC 2022
      * INPUT FILE: input5.txt
-     *
+     * Very wonky reading; Wish I could've made an array of LinkedLists...
      * @param sc scanner
      * @return correct answers
      */
-    public static int solve5_1(Scanner sc) {
-        int res = 0;
+    public static String solve5_1(Scanner sc) {
+        String line = sc.nextLine();
+        ArrayList<LinkedList<Character>> group = new ArrayList<>(100);
+        for(int i=0;i<100;i++)
+            group.add(new LinkedList<>());
+        while (!line.trim().equals("")){
+            for(int i=0; i<line.length();i++){
+                if(line.charAt(i)>='A' && line.charAt(i)<='Z'){
+                    LinkedList<Character> temp= group.get(i/4);
+                    temp.addFirst(line.charAt(i));
+                    group.set(i/4,temp);
+                }
+            }
+            if(sc.hasNextLine())
+            line = sc.nextLine();
+            else break;
+        }
+        int alpha;
+        while(sc.hasNextLine()){
+            line = sc.nextLine();
+            String[] spl = line.split(" ");
+            int noCrates = Integer.parseInt(spl[1]);
+            int from = Integer.parseInt(spl[3]);
+            int to = Integer.parseInt(spl[5]);
+            from--;
+            to--;
+            if (from == 6 && to == 4)
+                alpha=4;
 
-        return res;
+            LinkedList fro = group.get(from);
+            LinkedList t = group.get(to);
+            for(int j=0; j<noCrates;j++){
+                t.addLast(fro.removeLast());
+            }
+            group.set(from,fro);
+            group.set(to,t);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(LinkedList ll :group){
+            if(ll.size()!=0)
+                sb.append(ll.getLast());
+        }
+        return sb.toString();
     }
 
-    public static int solve5_2(Scanner sc) {
-        int res = -1;
+    public static String solve5_2(Scanner sc) {
+        String line = sc.nextLine();
+        ArrayList<LinkedList<Character>> group = new ArrayList<>(100);
+        for(int i=0;i<100;i++)
+            group.add(new LinkedList<>());
+        while (!line.trim().equals("")){
+            for(int i=0; i<line.length();i++){
+                if(line.charAt(i)>='A' && line.charAt(i)<='Z'){
+                    LinkedList<Character> temp= group.get(i/4);
+                    temp.addFirst(line.charAt(i));
+                    group.set(i/4,temp);
+                }
+            }
+            if(sc.hasNextLine())
+                line = sc.nextLine();
+            else break;
+        }
+        int alpha;
+        while(sc.hasNextLine()){
+            line = sc.nextLine();
+            String[] spl = line.split(" ");
+            int noCrates = Integer.parseInt(spl[1]);
+            int from = Integer.parseInt(spl[3]);
+            int to = Integer.parseInt(spl[5]);
+            from--;
+            to--;
 
-        return res;
+
+            LinkedList fro = group.get(from);
+            LinkedList t = group.get(to);
+            LinkedList<Character> tempp = new LinkedList<>();
+            for(int j=0; j<noCrates;j++){
+                tempp.addLast((Character) fro.removeLast());
+            }
+            for(int j=0; j<noCrates;j++){
+                t.addLast(tempp.removeLast());
+            }
+            group.set(from,fro);
+            group.set(to,t);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(LinkedList ll :group){
+            if(ll.size()!=0)
+                sb.append(ll.getLast());
+        }
+        return sb.toString();
     }
 }
