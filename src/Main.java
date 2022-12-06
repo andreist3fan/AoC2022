@@ -13,7 +13,7 @@ public class Main {
      * @throws FileNotFoundException if file was not added yet
      */
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner fs = new Scanner(new File("input5.txt"));
+        Scanner fs = new Scanner(new File("input6.txt"));
         Scanner baseTest = new Scanner("""
             2-4,6-8
             2-3,4-5
@@ -21,7 +21,7 @@ public class Main {
             2-8,3-7
             6-6,4-6
             2-6,4-8""");
-        System.out.println(solve5_2(fs));
+        System.out.println(solve6_1(fs));
     }
 
 
@@ -259,7 +259,6 @@ public class Main {
             line = sc.nextLine();
             else break;
         }
-        int alpha;
         while(sc.hasNextLine()){
             line = sc.nextLine();
             String[] spl = line.split(" ");
@@ -268,11 +267,9 @@ public class Main {
             int to = Integer.parseInt(spl[5]);
             from--;
             to--;
-            if (from == 6 && to == 4)
-                alpha=4;
 
-            LinkedList fro = group.get(from);
-            LinkedList t = group.get(to);
+            LinkedList<Character> fro = group.get(from);
+            LinkedList<Character> t = group.get(to);
             for(int j=0; j<noCrates;j++){
                 t.addLast(fro.removeLast());
             }
@@ -281,7 +278,7 @@ public class Main {
         }
 
         StringBuilder sb = new StringBuilder();
-        for(LinkedList ll :group){
+        for(LinkedList<Character> ll :group){
             if(ll.size()!=0)
                 sb.append(ll.getLast());
         }
@@ -305,7 +302,6 @@ public class Main {
                 line = sc.nextLine();
             else break;
         }
-        int alpha;
         while(sc.hasNextLine()){
             line = sc.nextLine();
             String[] spl = line.split(" ");
@@ -316,11 +312,11 @@ public class Main {
             to--;
 
 
-            LinkedList fro = group.get(from);
-            LinkedList t = group.get(to);
+            LinkedList<Character> fro = group.get(from);
+            LinkedList<Character> t = group.get(to);
             LinkedList<Character> tempp = new LinkedList<>();
             for(int j=0; j<noCrates;j++){
-                tempp.addLast((Character) fro.removeLast());
+                tempp.addLast(fro.removeLast());
             }
             for(int j=0; j<noCrates;j++){
                 t.addLast(tempp.removeLast());
@@ -330,10 +326,55 @@ public class Main {
         }
 
         StringBuilder sb = new StringBuilder();
-        for(LinkedList ll :group){
+        for(LinkedList<Character> ll :group){
             if(ll.size()!=0)
                 sb.append(ll.getLast());
         }
         return sb.toString();
+    }
+
+    public static int solve6_1(Scanner sc){
+        String line =sc.nextLine();
+        char[] m = line.toCharArray();
+        List<Character> app = new ArrayList<>();
+        for(int i=0;i<3;i++){
+            if(app.contains(m[i])){
+                app=new ArrayList<>();
+            }
+            else
+                app.add(m[i]);
+        }
+        for(int i=3; i<m.length;i++){
+            if(app.size()==4)
+                return i;
+            if(app.contains(m[i])){
+                app= app.subList(app.indexOf(m[i])+1,app.size());
+            }
+
+            app.add(m[i]);
+        }
+        return -1;
+    }
+    public static int solve6_2(Scanner sc){
+        String line =sc.nextLine();
+        char[] m = line.toCharArray();
+        List<Character> app = new ArrayList<>();
+        for(int i=0;i<3;i++){
+            if(app.contains(m[i])){
+                app=new ArrayList<>();
+            }
+            else
+                app.add(m[i]);
+        }
+        for(int i=3; i<m.length;i++){
+            if(app.size()==14)
+                return i;
+            if(app.contains(m[i])){
+                app= app.subList(app.indexOf(m[i])+1,app.size());
+            }
+
+            app.add(m[i]);
+        }
+        return -1;
     }
 }
