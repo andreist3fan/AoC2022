@@ -239,27 +239,28 @@ public class Main {
      * For the fifth day of AoC 2022
      * INPUT FILE: input5.txt
      * Very wonky reading; Wish I could've made an array of LinkedLists...
+     *
      * @param sc scanner
      * @return correct answers
      */
     public static String solve5_1(Scanner sc) {
         String line = sc.nextLine();
         ArrayList<LinkedList<Character>> group = new ArrayList<>(100);
-        for(int i=0;i<100;i++)
+        for (int i = 0; i < 100; i++)
             group.add(new LinkedList<>());
-        while (!line.trim().equals("")){
-            for(int i=0; i<line.length();i++){
-                if(line.charAt(i)>='A' && line.charAt(i)<='Z'){
-                    LinkedList<Character> temp= group.get(i/4);
+        while (!line.trim().equals("")) {
+            for (int i = 0; i < line.length(); i++) {
+                if (line.charAt(i) >= 'A' && line.charAt(i) <= 'Z') {
+                    LinkedList<Character> temp = group.get(i / 4);
                     temp.addFirst(line.charAt(i));
-                    group.set(i/4,temp);
+                    group.set(i / 4, temp);
                 }
             }
-            if(sc.hasNextLine())
-            line = sc.nextLine();
+            if (sc.hasNextLine())
+                line = sc.nextLine();
             else break;
         }
-        while(sc.hasNextLine()){
+        while (sc.hasNextLine()) {
             line = sc.nextLine();
             String[] spl = line.split(" ");
             int noCrates = Integer.parseInt(spl[1]);
@@ -270,16 +271,16 @@ public class Main {
 
             LinkedList<Character> fro = group.get(from);
             LinkedList<Character> t = group.get(to);
-            for(int j=0; j<noCrates;j++){
+            for (int j = 0; j < noCrates; j++) {
                 t.addLast(fro.removeLast());
             }
-            group.set(from,fro);
-            group.set(to,t);
+            group.set(from, fro);
+            group.set(to, t);
         }
 
         StringBuilder sb = new StringBuilder();
-        for(LinkedList<Character> ll :group){
-            if(ll.size()!=0)
+        for (LinkedList<Character> ll : group) {
+            if (ll.size() != 0)
                 sb.append(ll.getLast());
         }
         return sb.toString();
@@ -288,21 +289,21 @@ public class Main {
     public static String solve5_2(Scanner sc) {
         String line = sc.nextLine();
         ArrayList<LinkedList<Character>> group = new ArrayList<>(100);
-        for(int i=0;i<100;i++)
+        for (int i = 0; i < 100; i++)
             group.add(new LinkedList<>());
-        while (!line.trim().equals("")){
-            for(int i=0; i<line.length();i++){
-                if(line.charAt(i)>='A' && line.charAt(i)<='Z'){
-                    LinkedList<Character> temp= group.get(i/4);
+        while (!line.trim().equals("")) {
+            for (int i = 0; i < line.length(); i++) {
+                if (line.charAt(i) >= 'A' && line.charAt(i) <= 'Z') {
+                    LinkedList<Character> temp = group.get(i / 4);
                     temp.addFirst(line.charAt(i));
-                    group.set(i/4,temp);
+                    group.set(i / 4, temp);
                 }
             }
-            if(sc.hasNextLine())
+            if (sc.hasNextLine())
                 line = sc.nextLine();
             else break;
         }
-        while(sc.hasNextLine()){
+        while (sc.hasNextLine()) {
             line = sc.nextLine();
             String[] spl = line.split(" ");
             int noCrates = Integer.parseInt(spl[1]);
@@ -315,66 +316,86 @@ public class Main {
             LinkedList<Character> fro = group.get(from);
             LinkedList<Character> t = group.get(to);
             LinkedList<Character> tempp = new LinkedList<>();
-            for(int j=0; j<noCrates;j++){
+            for (int j = 0; j < noCrates; j++) {
                 tempp.addLast(fro.removeLast());
             }
-            for(int j=0; j<noCrates;j++){
+            for (int j = 0; j < noCrates; j++) {
                 t.addLast(tempp.removeLast());
             }
-            group.set(from,fro);
-            group.set(to,t);
+            group.set(from, fro);
+            group.set(to, t);
         }
 
         StringBuilder sb = new StringBuilder();
-        for(LinkedList<Character> ll :group){
-            if(ll.size()!=0)
+        for (LinkedList<Character> ll : group) {
+            if (ll.size() != 0)
                 sb.append(ll.getLast());
         }
         return sb.toString();
     }
-
-    public static int solve6_1(Scanner sc){
-        String line =sc.nextLine();
+    /**
+     * For the sixth day of AoC 2022
+     * INPUT FILE: input6.txt
+     * Back to normal(ish) stuff
+     *
+     * @param sc scanner
+     * @return correct answers
+     */
+    public static int solve6_1(Scanner sc) {
+        String line = sc.nextLine();
         char[] m = line.toCharArray();
         List<Character> app = new ArrayList<>();
-        for(int i=0;i<3;i++){
-            if(app.contains(m[i])){
-                app=new ArrayList<>();
-            }
-            else
+        for (int i = 0; i < 3; i++) {
+            if (app.contains(m[i])) {
+                app = new ArrayList<>();
+            } else
                 app.add(m[i]);
         }
-        for(int i=3; i<m.length;i++){
-            if(app.size()==4)
+        for (int i = 3; i < m.length; i++) {
+            if (app.size() == 4)
                 return i;
-            if(app.contains(m[i])){
-                app= app.subList(app.indexOf(m[i])+1,app.size());
+            if (app.contains(m[i])) {
+                app = app.subList(app.indexOf(m[i]) + 1, app.size());
             }
 
             app.add(m[i]);
         }
         return -1;
     }
-    public static int solve6_2(Scanner sc){
-        String line =sc.nextLine();
+
+    public static int solve6_2(Scanner sc) {
+        String line = sc.nextLine();
         char[] m = line.toCharArray();
         List<Character> app = new ArrayList<>();
-        for(int i=0;i<3;i++){
-            if(app.contains(m[i])){
-                app=new ArrayList<>();
-            }
-            else
+        for (int i = 0; i < 3; i++) {
+            if (app.contains(m[i])) {
+                app = new ArrayList<>();
+            } else
                 app.add(m[i]);
         }
-        for(int i=3; i<m.length;i++){
-            if(app.size()==14)
+        for (int i = 3; i < m.length; i++) {
+            if (app.size() == 14)
                 return i;
-            if(app.contains(m[i])){
-                app= app.subList(app.indexOf(m[i])+1,app.size());
+            if (app.contains(m[i])) {
+                app = app.subList(app.indexOf(m[i]) + 1, app.size());
             }
 
             app.add(m[i]);
         }
+        return -1;
+    }
+    /**
+     * For the seventh day of AoC 2022
+     * <p>INPUT FILE: input7.txt</p>
+     *
+     *
+     * @param sc scanner
+     * @return correct answers
+     */
+    public static int solve7_1(Scanner sc){
+        return 0;
+    }
+    public static int solve7_2(Scanner sc){
         return -1;
     }
 }
