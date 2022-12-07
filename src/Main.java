@@ -1,9 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     /**
@@ -12,8 +9,8 @@ public class Main {
      * @param args args
      * @throws FileNotFoundException if file was not added yet
      */
-    public static void main(String[] args) throws FileNotFoundException {
-        Scanner fs = new Scanner(new File("input6.txt"));
+    public static void main(String[] args) throws Exception {
+        Scanner fs = new Scanner(new File("input7.txt"));
         Scanner baseTest = new Scanner("""
             2-4,6-8
             2-3,4-5
@@ -21,7 +18,9 @@ public class Main {
             2-8,3-7
             6-6,4-6
             2-6,4-8""");
-        System.out.println(solve6_1(fs));
+        //System.out.println(test(fs));
+        System.out.println(solve7_2(fs));
+
     }
 
 
@@ -392,10 +391,232 @@ public class Main {
      * @param sc scanner
      * @return correct answers
      */
-    public static int solve7_1(Scanner sc){
-        return 0;
+    /**
+     * Scrapped solution below because I'm stupid and did not account for identical name
+     * directories
+     */
+//    public static long solve7_1(Scanner sc){
+//        ArrayList<String> id = new ArrayList<>(); // to link directories to ids
+//        ArrayList<Long> overall_sums = new ArrayList<>();
+//        ArrayList<ArrayList<Integer>> sons= new ArrayList<>();
+//        sons.add(new ArrayList<>());
+//        id.add("/");
+//        overall_sums.add((long)0);
+//        Stack<String> currDir = new Stack<>();
+//        boolean ok=true;
+//        String line="";
+//        while(sc.hasNextLine()){
+//            if(ok)
+//                line = sc.nextLine();
+//            ok=true;
+//            String[] subL = line.split(" ");
+//            if(subL[1].equals("cd")){
+//                if(subL[2].equals("djb"))
+//                    System.out.println("oke");
+//                if(subL[2].equals(".."))
+//                    currDir.pop();
+//                else if(subL[2].equals("/")){
+//                    currDir = new Stack<>();
+//                    currDir.push("/");
+//                }
+//                else {
+//                    //String cs = currDir.peek();
+//                    //if(sons.get(id.indexOf(cs)).contains(id.indexOf(subL[2])))
+//                    currDir.push(subL[2]);
+//                    //else
+//                        //System.out.println("happens");
+//                }
+//            }
+//            else{
+//                line=sc.nextLine();
+//                ok=false;
+//                while(!line.startsWith("$")){
+//                    if(line.startsWith("dir")){
+//                        String dir = line.split(" ")[1];
+//                        //if(!id.contains(dir)){
+//                            id.add(dir);
+//                            overall_sums.add((long)0);
+//                            sons.add(new ArrayList<>());
+//                        //}
+//                        String cd = currDir.peek();
+//                        ArrayList<Integer> dirr = sons.get(id.indexOf(cd));
+//                        if(!dirr.contains(id.indexOf(dir)))
+//                            dirr.add(id.indexOf(dir));
+//                        sons.set(id.indexOf(cd),dirr);
+//                    }
+//                    else{
+//                        int val = Integer.parseInt(line.split(" ")[0]);
+//                        Stack<String> temp = (Stack<String>) currDir.clone();
+//                        while(!temp.isEmpty()){
+//                            String cd = temp.pop();
+//                            long sms = overall_sums.get(id.indexOf(cd));
+//                            sms+=val;
+//                            overall_sums.set(id.indexOf(cd),sms);
+//                        }
+//                    }
+//                    if(sc.hasNextLine())
+//                        line= sc.nextLine();
+//                    else line = "$";
+//                }
+//            }
+//
+//        }
+//        long res=0;
+//        for(int i=0;i<id.size();i++){
+//            //System.out.print(id.get(i)+" ");
+//            long sum = overall_sums.get(i);
+//            if(sum<=100000)
+//            {
+//                //System.out.print(i+" ");
+//                System.out.println(sum+" ");
+//                res+=sum;
+//            }
+//        }
+//        return res;
+//    }
+    public static long solve7_1(Scanner sc){
+        Node root = new Node(0,null,"/",new ArrayList<>());
+        Node current=root;
+        Stack<String> currDir = new Stack<>();
+        boolean ok=true;
+        String line="";
+        while(sc.hasNextLine()){
+            if(ok)
+                line = sc.nextLine();
+            ok=true;
+            String[] subL = line.split(" ");
+            if(subL[1].equals("cd")){
+                if(subL[2].equals(".."))
+                {
+                    currDir.pop();
+                    current = current.getParent();
+                }
+                else if(subL[2].equals("/")){
+                    currDir = new Stack<>();
+                    currDir.push("/");
+                    current=root;
+                }
+                else {
+                    //String cs = currDir.peek();
+                    //if(sons.get(id.indexOf(cs)).contains(id.indexOf(subL[2])))
+                    for (Node n:
+                        current.getChildren()) {
+                        if(n.getId().equals(subL[2])){
+                            current=n;
+                            break;
+                        }
+                    }
+                    currDir.push(subL[2]);
+                    //else
+                    //System.out.println("happens");
+                }
+            }
+            else{
+                line=sc.nextLine();
+                ok=false;
+                while(!line.startsWith("$")){
+                    if(line.startsWith("dir")){
+                        String dir = line.split(" ")[1];
+                        //if(!id.contains(dir)){
+                        Node nuNode = new Node(0,current,dir,new ArrayList<>());
+                        current.addAsSon(nuNode);
+                    }
+                    else{
+                        int val = Integer.parseInt(line.split(" ")[0]);
+                        current.increment((long)val,current);
+                    }
+                    if(sc.hasNextLine())
+                        line= sc.nextLine();
+                    else line = "$";
+                }
+            }
+
+        }
+        long res=0;
+        Node start = root;
+        LinkedList<Node> bfs = new LinkedList<>();
+        bfs.add(root);
+        while (!bfs.isEmpty()){
+            Node crt = bfs.removeFirst();
+            if(crt.getValue()<=100000)
+                res+=crt.getValue();
+            for (Node nn: crt.getChildren()) {
+                bfs.addLast(nn);
+            }
+        }
+        return res;
     }
-    public static int solve7_2(Scanner sc){
-        return -1;
+    public static long solve7_2(Scanner sc){
+        Node root = new Node(0,null,"/",new ArrayList<>());
+        Node current=root;
+        Stack<String> currDir = new Stack<>();
+        boolean ok=true;
+        String line="";
+        while(sc.hasNextLine()){
+            if(ok)
+                line = sc.nextLine();
+            ok=true;
+            String[] subL = line.split(" ");
+            if(subL[1].equals("cd")){
+                if(subL[2].equals(".."))
+                {
+                    currDir.pop();
+                    current = current.getParent();
+                }
+                else if(subL[2].equals("/")){
+                    currDir = new Stack<>();
+                    currDir.push("/");
+                    current=root;
+                }
+                else {
+                    //String cs = currDir.peek();
+                    //if(sons.get(id.indexOf(cs)).contains(id.indexOf(subL[2])))
+                    for (Node n:
+                        current.getChildren()) {
+                        if(n.getId().equals(subL[2])){
+                            current=n;
+                            break;
+                        }
+                    }
+                    currDir.push(subL[2]);
+                    //else
+                    //System.out.println("happens");
+                }
+            }
+            else{
+                line=sc.nextLine();
+                ok=false;
+                while(!line.startsWith("$")){
+                    if(line.startsWith("dir")){
+                        String dir = line.split(" ")[1];
+                        //if(!id.contains(dir)){
+                        Node nuNode = new Node(0,current,dir,new ArrayList<>());
+                        current.addAsSon(nuNode);
+                    }
+                    else{
+                        int val = Integer.parseInt(line.split(" ")[0]);
+                        current.increment((long)val,current);
+                    }
+                    if(sc.hasNextLine())
+                        line= sc.nextLine();
+                    else line = "$";
+                }
+            }
+
+        }
+        long res=30000001;
+        Node start = root;
+        long needToRemove = root.getValue()-40000000;
+        LinkedList<Node> bfs = new LinkedList<>();
+        bfs.add(root);
+        while (!bfs.isEmpty()){
+            Node crt = bfs.removeFirst();
+            if(crt.getValue()>=needToRemove && crt.getValue()<res)
+                res=crt.getValue();
+            for (Node nn: crt.getChildren()) {
+                bfs.addLast(nn);
+            }
+        }
+        return res;
     }
 }
