@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Main {
     /**
-     * Where the magic happens
+     * The first seven days of Advent of Code 2022 below
      *
      * @param args args
      * @throws FileNotFoundException if file was not added yet
@@ -386,12 +386,12 @@ public class Main {
     /**
      * For the seventh day of AoC 2022
      * <p>INPUT FILE: input7.txt</p>
-     *
-     *
+     * In my defense, I did know it was a tree, but
+     * I did not want to use the classic tree formula.
      * @param sc scanner
      * @return correct answers
      */
-    /**
+    /*
      * Scrapped solution below because I'm stupid and did not account for identical name
      * directories
      */
